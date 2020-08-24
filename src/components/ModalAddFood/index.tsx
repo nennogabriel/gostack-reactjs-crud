@@ -5,6 +5,7 @@ import { FormHandles } from '@unform/core';
 import { Form } from './styles';
 import Modal from '../Modal';
 import Input from '../Input';
+import api from '../../services/api';
 
 interface IFoodPlate {
   id: number;
@@ -38,6 +39,16 @@ const ModalAddFood: React.FC<IModalProps> = ({
   const handleSubmit = useCallback(
     async (data: ICreateFoodData) => {
       // TODO ADD A NEW FOOD AND CLOSE THE MODAL
+      const { name, price, image, description } = data;
+      const response = await api.post('foods', {
+        name,
+        description,
+        price,
+        image,
+        available: true,
+      });
+      handleAddFood(response.data);
+      setIsOpen();
     },
     [handleAddFood, setIsOpen],
   );
